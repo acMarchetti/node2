@@ -1,13 +1,9 @@
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
-import passport from "passport";
-import passportJWT from "passport-jwt";
-import { db } from "./db";
-
+import passport from 'passport';
+import passportJWT from 'passport-jwt';
+import { db } from './db';
 const { SECRET } = process.env;
-if (!SECRET) {
-  throw new Error();
-}
 passport.use(
   new passportJWT.Strategy(
     {
@@ -15,11 +11,11 @@ passport.use(
       jwtFromRequest: passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken(),
     },
     async (payload, done) => {
-      const user = await db.one(`SELECT * FROM users WHERE id=$1`, payload.id);
+      const user = await db.one('SELECT * FROM users WHERE id=$1', payload.id);
       console.log(user);
 
       try {
-        return user ? done(null, user) : done(new Error("User not found"));
+        return user ? done(null, user) : done(new Error('user not found'));
       } catch (error) {
         done(error);
       }
